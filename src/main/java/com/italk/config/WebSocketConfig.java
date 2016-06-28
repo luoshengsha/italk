@@ -1,36 +1,30 @@
 package com.italk.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import com.italk.websocket.MyHandshakeInterceptor;
-import com.italk.websocket.MyWebSocketHandler;
-
-//@Configuration
-//@EnableWebSocketMessageBroker
-/*public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic");
+		//config.enableSimpleBroker("/chat/p2p","/chat/group");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/hello").withSockJS();
+		//registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS().setInterceptors(new WebSocketHandshakeInterceptor());
+		registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
 	}
-
-}*/
-
-public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(new MyWebSocketHandler(),"/echo").addInterceptors(new MyHandshakeInterceptor()); //支持websocket 的访问链接
-        registry.addHandler(new MyWebSocketHandler(),"/sockjs/echo").addInterceptors(new MyHandshakeInterceptor()).withSockJS(); //不支持websocket的访问链接
-	}
-	
+	  public void configureClientInboundChannel(ChannelRegistration registration) {
+	    registration.setInterceptors(new WebsocketInterceptor());
+	  }
 }

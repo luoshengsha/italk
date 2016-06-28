@@ -24,6 +24,14 @@ public class Avatar {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
+	/** uuid **/
+	@Column(nullable=false,length=40)
+	private String uuid;
+	
+	/** 名称 **/
+	@Column(nullable=false)
+	private String name;
+	
 	/** 图片路径 **/
 	@Column(nullable=false)
 	private String imgpath;
@@ -38,6 +46,18 @@ public class Avatar {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getImgpath() {
 		return imgpath;

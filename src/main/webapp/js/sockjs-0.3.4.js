@@ -940,8 +940,7 @@ var SockJS = function(url, dep_protocols_whitelist, options) {
     }
     
     var that = this, protocols_whitelist;
-    that._options = {devel: false, debug: false, protocols_whitelist: [],
-                     info: undefined, rtt: undefined};
+    that._options = {devel: false, debug: false, protocols_whitelist: dep_protocols_whitelist,info: undefined, rtt: undefined};
     if (options) {
         utils.objectExtend(that._options, options);
     }

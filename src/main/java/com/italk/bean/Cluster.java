@@ -1,5 +1,6 @@
 package com.italk.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,6 +31,10 @@ public class Cluster {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	
+	/** uuid **/
+	@Column(nullable=false)
+	public String uuid;
 	
 	/** 群名称 **/
 	@Column(nullable=false)
@@ -48,7 +54,12 @@ public class Cluster {
 	@JoinTable(name = "t_cluster_user", joinColumns = {
 			@JoinColumn(name = "cluster_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "user_id", referencedColumnName = "id") })
-	private List<User> members;
+	private List<User> members = new ArrayList<User>();
+	
+	/** 文件 **/
+	@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, 
+			CascadeType.REMOVE },mappedBy="cluster")
+	private List<UploadFile> files = new ArrayList<UploadFile>();
 
 	public int getId() {
 		return id;
@@ -56,6 +67,14 @@ public class Cluster {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getName() {
@@ -88,5 +107,13 @@ public class Cluster {
 
 	public void setMembers(List<User> members) {
 		this.members = members;
+	}
+
+	public List<UploadFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<UploadFile> files) {
+		this.files = files;
 	}
 }

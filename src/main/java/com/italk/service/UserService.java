@@ -10,5 +10,11 @@ public interface UserService {
 	
 	public User find(int id);
 	
+	public User find(String uuid);
+	
 	public Iterable<User> findAll();
+	
+	public boolean checkUser(String username, String password);
+	
+	public User getByName(String name);
 }

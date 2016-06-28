@@ -1,31 +1,23 @@
 package com.italk;
 
-import javax.servlet.Filter;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.orm.hibernate3.support.OpenSessionInViewFilter;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
+
+import com.italk.utils.PropertiesUtil;
 
 @SpringBootApplication
-public class Application {
-
+@EnableConfigurationProperties({PropertiesUtil.class})
+public class Application extends SpringBootServletInitializer {
+	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
 	}
-	
-	/*@Bean
-    public FilterRegistrationBean filterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(openSessionInView());
-        registration.addUrlPatterns("/*");
-
-        return registration;
+    
+    @Override    
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {    
+        return builder.sources(Application.class);
     }
-
-    @Bean
-    public Filter openSessionInView() {
-        return new OpenSessionInViewFilter();
-    }*/
 }

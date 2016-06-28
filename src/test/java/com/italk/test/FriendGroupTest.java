@@ -51,7 +51,7 @@ public class FriendGroupTest {
 	
 	@Test
 	public void getByUser() {
-		List<FriendsGroup> groups = groupService.findByUser(userService.find(1));
+		List<FriendsGroup> groups = groupService.getByCreater(userService.find(1));
 		for(FriendsGroup group : groups) {
 			System.out.println(group.getName());
 		

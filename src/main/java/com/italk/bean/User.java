@@ -1,5 +1,7 @@
 package com.italk.bean;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * 用户
@@ -45,7 +49,23 @@ public class User {
 	private Avatar avatar;
 	
 	/** 用户状态 **/
+	@Column(nullable=false,length=10)
 	private UserStatus status;
+	
+	/** 注册时间 **/
+	@Column(nullable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date registTime;
+	
+	/** 最后一次登录时间 **/
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastLoginTime;
+	
+	public User() {}
+	
+	public User(int id) {
+		this.id = id;
+	}
 	
 	public int getId() {
 		return id;
@@ -88,5 +108,39 @@ public class User {
 	}
 	public void setStatus(UserStatus status) {
 		this.status = status;
+	}
+	public Date getRegistTime() {
+		return registTime;
+	}
+	public void setRegistTime(Date registTime) {
+		this.registTime = registTime;
+	}
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 }

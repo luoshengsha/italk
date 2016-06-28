@@ -14,7 +14,35 @@ import com.italk.bean.User;
 public interface FriendsGroupService {
 	public void save(FriendsGroup group);
 	public void update(FriendsGroup group);
-	public void delete(int id);
-	public List<FriendsGroup> findByUser(User user);
+	public void delete(String uuid);
 	public FriendsGroup find(int id);
+	public FriendsGroup find(String uuid);
+	/**
+	 * 填充组员
+	 * @param group
+	 * @param user
+	 */
+	public void pushMember(FriendsGroup group, User user);
+	
+	/**
+	 * 移动好友
+	 * @param fromGroup
+	 * @param toGroup
+	 * @param user
+	 */
+	public void moveMember(FriendsGroup fromGroup, FriendsGroup toGroup, User user);
+	
+	/**
+	 * 删除好友
+	 * @param group
+	 * @param user
+	 */
+	public void deleteMember(FriendsGroup group, User user);
+	
+	/**
+	 * 根据创建者获取
+	 * @param creater
+	 * @return
+	 */
+	public List<FriendsGroup> getByCreater(User creater);
 }

@@ -43,6 +43,10 @@ public class ChatRecord {
 	@Column(nullable=false)
 	private Date createTime;
 	
+	/**频道**/
+	@Column(nullable=false)
+	private String channel;
+	
 	public int getId() {
 		return id;
 	}
@@ -72,6 +76,12 @@ public class ChatRecord {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public String getChannel() {
+		return channel;
+	}
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 	
 }

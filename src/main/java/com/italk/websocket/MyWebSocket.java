@@ -11,7 +11,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
-@ServerEndpoint("/websocket")  
+//@ServerEndpoint("/websocket")  
 @Component  
 public class MyWebSocket {  
   
@@ -41,7 +41,7 @@ System.out.println(session.getPathParameters() + " " + session.getId() + " " + s
     }  
   
     @OnMessage  
-    public void onMessage (String message, Session session) throws IOException {  
+    public void Message (String message, Session session) throws IOException {  
         System.out.println("来自客户端的消息:" + message);  
         // 群发消息  
         for ( MyWebSocket item : webSocketSet ){  

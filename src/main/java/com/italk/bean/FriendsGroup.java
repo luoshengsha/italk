@@ -1,5 +1,6 @@
 package com.italk.bean;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * 好友分组
@@ -29,6 +32,10 @@ public class FriendsGroup {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
+	/** 分组uuid **/
+	@Column(nullable=false,length=50)
+	private String uuid;
 
 	/** 分组名称 **/
 	@Column(nullable = false)
@@ -43,12 +50,17 @@ public class FriendsGroup {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },fetch=FetchType.LAZY)
 	@JoinTable(name = "t_friendsgroup_user", joinColumns = {
 			@JoinColumn(name = "group_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "user_id", referencedColumnName = "id") })
+					@JoinColumn(name = "user_id", referencedColumnName = "id")})
 	private Set<User> members;
 	
 	/** 是否默认分组（默认分组为“我的好友”） **/
 	@Column(nullable=false,columnDefinition="INT default 0")
 	private boolean isDefault;
+	
+	/** 创建时间 **/
+	@Column(nullable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createTime;
 
 	public int getId() {
 		return id;
@@ -56,6 +68,14 @@ public class FriendsGroup {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getName() {
@@ -88,6 +108,14 @@ public class FriendsGroup {
 
 	public void setDefault(boolean isDefault) {
 		this.isDefault = isDefault;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 }
