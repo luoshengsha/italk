@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.italk.bean.ChatRecord;
 import com.italk.bean.ClusChatRecord;
+import com.italk.bean.Friend;
 import com.italk.bean.RecentMessage;
 import com.italk.bean.User;
 import com.italk.vo.ChatRecordVo;
+import com.italk.vo.FriendVo;
 import com.italk.vo.RecentMessageVo;
 
 /**
@@ -70,7 +72,8 @@ public class BeanConvertUtil {
 				vo.setChannel(userid + "-" + touserid);
 			}
 			
-			vo.setAvatar(PropertiesUtil.pic_url + message.getUser().getAvatar().getImgpath());
+			String avatar = message.getUser().getAvatar() == null ? "" : PropertiesUtil.pic_url + message.getUser().getAvatar().getImgpath();
+			vo.setAvatar(avatar);
 		} else {
 			vo.setName(message.getCluster().getName());
 			vo.setChannel(message.getCluster().getUuid());
@@ -80,7 +83,8 @@ public class BeanConvertUtil {
 			
 			for(User member : message.getCluster().getMembers()) {
 				if(member.getAvatar() != null) {
-					avatars.add(PropertiesUtil.pic_url + member.getAvatar().getImgpath());
+					String avatar = member.getAvatar() == null ? "" : PropertiesUtil.pic_url + member.getAvatar().getImgpath();
+					avatars.add(avatar);
 					i++;
 				}
 				
@@ -93,6 +97,31 @@ public class BeanConvertUtil {
 		}
 		vo.setTime(DateUtil.date2Str(message.getCreateTime(), "HH:mm:ss"));
 		vo.setType(message.getType());
+		vo.setContent(message.getContent());
+		vo.setAmount(message.getMessageAmount());
+		
+		return vo;
+	}
+	
+	/**
+	 * 转换好友
+	 * @param friend
+	 * @return
+	 */
+	public static FriendVo convertFriend(Friend friend) {
+		FriendVo vo = new FriendVo();
+		vo.setId(friend.getFriend().getId());
+		
+		String name = friend.getRemark();
+		if(name == null) {
+			friend.getFriend().getNickname();
+		}
+		if(name == null) {
+			friend.getFriend().getName();
+		}
+		vo.setName(name);
+		vo.setAvatar(friend.getFriend().getAvatar() == null ? "" : PropertiesUtil.pic_url+friend.getFriend().getAvatar());
+		vo.setStatus(friend.getFriend().getStatus());
 		
 		return vo;
 	}

@@ -24,4 +24,17 @@ public interface RecentMessageService {
 	 * @return
 	 */
 	public List<RecentMessage> getMessages(User toUser);
+	
+	/**
+	 * 获取未读信息
+	 * @param toUser
+	 * @return
+	 */
+	public List<RecentMessage> getUnreadMessage(User toUser);
+	
+	/**
+	 * 读取消息
+	 * @param id
+	 */
+	public void readMessage(String id);
 }

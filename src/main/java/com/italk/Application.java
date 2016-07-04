@@ -20,4 +20,18 @@ public class Application extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {    
         return builder.sources(Application.class);
     }
+    
+    /*@Bean
+    public FilterRegistrationBean filterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(openSessionInView());
+        registration.addUrlPatterns("/*");
+
+        return registration;
+    }
+
+    @Bean
+    public Filter openSessionInView() {
+        return new OpenSessionInViewFilter();
+    }*/
 }

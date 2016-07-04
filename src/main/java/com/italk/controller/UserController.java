@@ -68,6 +68,7 @@ public class UserController {
 	 * @param status
 	 * @return
 	 */
+	@RequestMapping("/set_status")
 	public ReturnObject toggleStatus(UserStatus status,HttpServletRequest request) {
 		ReturnObject obj = new ReturnObject();
 		

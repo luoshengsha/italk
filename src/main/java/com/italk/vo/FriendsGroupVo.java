@@ -12,7 +12,7 @@ import java.util.List;
 public class FriendsGroupVo {
 	private String id;
 	private String name;
-	private List<UserVo> members = new ArrayList<UserVo>();
+	private List<FriendVo> members = new ArrayList<FriendVo>();
 	public String getId() {
 		return id;
 	}
@@ -25,10 +25,10 @@ public class FriendsGroupVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<UserVo> getMembers() {
+	public List<FriendVo> getMembers() {
 		return members;
 	}
-	public void setMembers(List<UserVo> members) {
+	public void setMembers(List<FriendVo> members) {
 		this.members = members;
 	}
 }

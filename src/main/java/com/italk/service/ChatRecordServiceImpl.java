@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.italk.bean.ChatRecord;
 import com.italk.bean.RecentMessage;
 import com.italk.dao.ChatRecordDao;
+import com.italk.repository.CurrentUsersRespository;
 import com.italk.utils.WebUtil;
 
 /**
@@ -20,7 +21,6 @@ import com.italk.utils.WebUtil;
  */
 
 @Service
-@Transactional
 public class ChatRecordServiceImpl implements ChatRecordService {
 
 	@Resource
@@ -29,6 +29,7 @@ public class ChatRecordServiceImpl implements ChatRecordService {
 	private RecentMessageService recMsgService;
 	
 	@Override
+	@Transactional
 	public void save(ChatRecord record) {
 		//保存聊天记录
 		recordDao.save(record);
@@ -41,6 +42,7 @@ public class ChatRecordServiceImpl implements ChatRecordService {
 		msg.setContent(record.getContent());
 		msg.setType(1);
 		msg.setCreateTime(record.getCreateTime());
+		
 		recMsgService.save(msg);
 	}
 

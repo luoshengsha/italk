@@ -19,10 +19,10 @@
         function connect() {
         	var socket = new SockJS('/ws');
         	stompClient = Stomp.over(socket);
-        	stompClient.connect({}, function(frame) {
+        	stompClient.connect({token:"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzI4MjY2NywicHciOiIxMjM0NTYiLCJpZCI6IjEiLCJ1dWlkIjoiZDM2NmZmOTktZGU0YS00Y2I3LTk5YjgtNzMwYjBlMDU0NzIyIn0.fVcyGh_Pss1T9t7ej6DH78OGX99ZDmu3jC_W2VRmJBI"}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe("/app/chat/63b16d4c-170a-4b8b-ac78-7ebe89a01017/get_msg.htm", function(greeting){
+                stompClient.subscribe("/app/chat/ae949a21-9d6e-40dc-abb1-cfbdc596a133/get_msg.htm", function(greeting){
                 	console.log(greeting);
                 	var messages = JSON.parse(greeting.body);
                 	
@@ -37,6 +37,55 @@
                     //showGreeting(JSON.parse(greeting.body).message);
                     //showGreeting(greeting.body);
                 });
+                var get_recent_msg = stompClient.subscribe("/app/chat/get_recent_msg.htm", function(greeting){
+                	console.log(greeting);
+                	var messages = JSON.parse(greeting.body);
+                	
+                	console.log("----------------------------------------------------------");
+                	console.log(messages);
+                	//showGreeting(messages.from+"说：" + messages.message + "  " + messages.time);
+                	
+                	//$("#response").html("");
+                	
+                	/* $.each(messages,function(item) {
+                		console.log(item);
+                		showGreeting(JSON.parse(item).message);
+                	}); */
+                    //showGreeting(JSON.parse(greeting.body).message);
+                    //showGreeting(greeting.body);
+                    
+                	//get_recent_msg.unsubscribe("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzI4MjY2NywicHciOiIxMjM0NTYiLCJpZCI6IjEiLCJ1dWlkIjoiZDM2NmZmOTktZGU0YS00Y2I3LTk5YjgtNzMwYjBlMDU0NzIyIn0.fVcyGh_Pss1T9t7ej6DH78OGX99ZDmu3jC_W2VRmJBI","/app/chat/get_recent_msg.htm");
+                },
+                {token:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzI4MjY2NywicHciOiIxMjM0NTYiLCJpZCI6IjEiLCJ1dWlkIjoiZDM2NmZmOTktZGU0YS00Y2I3LTk5YjgtNzMwYjBlMDU0NzIyIn0.fVcyGh_Pss1T9t7ej6DH78OGX99ZDmu3jC_W2VRmJBI'});
+                
+                stompClient.subscribe("/app/chat/get_unread_msg.htm", function(greeting){
+                	console.log(greeting);
+                	var messages = JSON.parse(greeting.body);
+                	
+                	console.log(messages);
+                	
+                	//showGreeting(messages.from+"说：" + messages.message + "  " + messages.time);
+                	//$("#response").html("");
+                	
+                	messages.forEach(function(item) {
+                		//showGreeting(JSON.parse(item).message);
+                		showGreeting(item.name+"说--：" + JSON.parse(item.content).message + "  " + item.time);
+                	});
+                    //showGreeting(JSON.parse(greeting.body).message);
+                    //showGreeting(greeting.body);
+                },
+                {token:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzI4MjY2NywicHciOiIxMjM0NTYiLCJpZCI6IjEiLCJ1dWlkIjoiZDM2NmZmOTktZGU0YS00Y2I3LTk5YjgtNzMwYjBlMDU0NzIyIn0.fVcyGh_Pss1T9t7ej6DH78OGX99ZDmu3jC_W2VRmJBI'}
+                );
+                
+                stompClient.subscribe("/app/chat/friends/list-1.htm", function(greeting){
+                	console.log(greeting);
+                	var messages = JSON.parse(greeting.body);
+                	
+                	console.log("-----------好友列表-----------")
+                	console.log(messages);
+                },
+                {token:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzI4MjY2NywicHciOiIxMjM0NTYiLCJpZCI6IjEiLCJ1dWlkIjoiZDM2NmZmOTktZGU0YS00Y2I3LTk5YjgtNzMwYjBlMDU0NzIyIn0.fVcyGh_Pss1T9t7ej6DH78OGX99ZDmu3jC_W2VRmJBI'}
+                );
             });
         }
 
@@ -50,7 +99,7 @@
 
         function sendName() {
             var name = document.getElementById('name').value;
-            stompClient.send("/app/chat/cluster/sendmsg.htm", {'channel':'63b16d4c-170a-4b8b-ac78-7ebe89a01017','from':'1'}, JSON.stringify({ 'message': name }));
+            stompClient.send("/app/chat/cluster/sendmsg.htm", {'channel':'ae949a21-9d6e-40dc-abb1-cfbdc596a133','from':'1',token:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzI4MjY2NywicHciOiIxMjM0NTYiLCJpZCI6IjEiLCJ1dWlkIjoiZDM2NmZmOTktZGU0YS00Y2I3LTk5YjgtNzMwYjBlMDU0NzIyIn0.fVcyGh_Pss1T9t7ej6DH78OGX99ZDmu3jC_W2VRmJBI'}, JSON.stringify({ 'message': name }));
         }
 
         function showGreeting(message) {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.italk.bean.FriendsGroup;
 import com.italk.bean.User;
+import com.italk.bean.UserStatus;
 import com.italk.dao.FriendsGroupDao;
 import com.italk.dao.UserDao;
 import com.italk.utils.WebUtil;
@@ -67,5 +68,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getByName(String name) {
 		return userDao.findByName(name);
+	}
+
+	@Override
+	public void setStatus(String uuid, UserStatus status) {
+		userDao.setStatus(uuid, status);
 	}
 }

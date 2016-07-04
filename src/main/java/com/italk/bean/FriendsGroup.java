@@ -47,11 +47,11 @@ public class FriendsGroup {
 	private User creater;
 
 	/** 组员 **/
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },fetch=FetchType.LAZY)
-	@JoinTable(name = "t_friendsgroup_user", joinColumns = {
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },fetch=FetchType.EAGER)
+	@JoinTable(name = "t_friendsgroup_friend", joinColumns = {
 			@JoinColumn(name = "group_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "user_id", referencedColumnName = "id")})
-	private Set<User> members;
+					@JoinColumn(name = "friend_id", referencedColumnName = "id")})
+	private Set<Friend> members;
 	
 	/** 是否默认分组（默认分组为“我的好友”） **/
 	@Column(nullable=false,columnDefinition="INT default 0")
@@ -94,11 +94,11 @@ public class FriendsGroup {
 		this.creater = creater;
 	}
 
-	public Set<User> getMembers() {
+	public Set<Friend> getMembers() {
 		return members;
 	}
 
-	public void setMembers(Set<User> members) {
+	public void setMembers(Set<Friend> members) {
 		this.members = members;
 	}
 

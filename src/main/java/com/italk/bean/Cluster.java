@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,11 +51,11 @@ public class Cluster {
 	private Date createTime;
 	
 	/** 群成员 **/
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "t_cluster_user", joinColumns = {
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE },fetch=FetchType.EAGER)
+	@JoinTable(name = "t_cluster_member", joinColumns = {
 			@JoinColumn(name = "cluster_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "user_id", referencedColumnName = "id") })
-	private List<User> members = new ArrayList<User>();
+					@JoinColumn(name = "member_id", referencedColumnName = "id") })
+	private List<Member> members = new ArrayList<Member>();
 	
 	/** 文件 **/
 	@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, 
@@ -101,11 +102,11 @@ public class Cluster {
 		this.createTime = createTime;
 	}
 
-	public List<User> getMembers() {
+	public List<Member> getMembers() {
 		return members;
 	}
 
-	public void setMembers(List<User> members) {
+	public void setMembers(List<Member> members) {
 		this.members = members;
 	}
 

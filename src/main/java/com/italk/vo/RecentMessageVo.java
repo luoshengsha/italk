@@ -21,6 +21,8 @@ public class RecentMessageVo {
 	private String time;
 	/** 头像 **/
 	private Object avatar;
+	/** 消息数量 **/
+	private int amount;
 	
 	public String getId() {
 		return id;
@@ -63,5 +65,11 @@ public class RecentMessageVo {
 	}
 	public void setAvatar(Object avatar) {
 		this.avatar = avatar;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 }

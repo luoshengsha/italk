@@ -23,8 +23,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 		registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
 	}
 
-	@Override
-	  public void configureClientInboundChannel(ChannelRegistration registration) {
-	    registration.setInterceptors(new WebsocketInterceptor());
-	  }
+	/*@Override
+	public void configureClientInboundChannel(ChannelRegistration registration) {
+		registration.setInterceptors(new WebsocketInterceptor());
+	}*/
 }

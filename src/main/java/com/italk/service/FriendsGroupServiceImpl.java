@@ -7,9 +7,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.italk.bean.Friend;
 import com.italk.bean.FriendsGroup;
 import com.italk.bean.User;
+import com.italk.dao.FriendDao;
 import com.italk.dao.FriendsGroupDao;
+import com.italk.utils.WebUtil;
 
 /**
  * 好友分组service实现类
@@ -18,11 +21,12 @@ import com.italk.dao.FriendsGroupDao;
  * 2016年6月14日-下午4:26:39
  */
 @Service
-@Transactional
 public class FriendsGroupServiceImpl implements FriendsGroupService {
 
 	@Resource
 	private FriendsGroupDao friendGroupDao;
+	@Resource
+	private FriendDao friendDao;
 	
 	@Override
 	public void save(FriendsGroup group) {
@@ -35,6 +39,7 @@ public class FriendsGroupServiceImpl implements FriendsGroupService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(String uuid) {
 		FriendsGroup group = friendGroupDao.find(uuid);
 		
@@ -68,31 +73,45 @@ public class FriendsGroupServiceImpl implements FriendsGroupService {
 
 	@Override
 	public void pushMember(FriendsGroup group, User user) {
-		group.getMembers().add(user);
+		//构建好友
+		Friend friend = new Friend();
+		friend.setUuid(WebUtil.createUuid());
+		friend.setFriend(user);
+		friend.setOwner(group.getCreater());
+		//保存好友
+		friendDao.save(friend);
+		
+		group.getMembers().add(friend);
+		//保存至分组中
 		friendGroupDao.save(group);
 	}
 
 	@Override
-	public void moveMember(FriendsGroup fromGroup, FriendsGroup toGroup, User user) {
+	@Transactional
+	public void moveMember(FriendsGroup fromGroup, FriendsGroup toGroup, Friend friend) {
 		//把好友添加至新分组中
-		toGroup.getMembers().add(user);
+		toGroup.getMembers().add(friend);
 		friendGroupDao.save(toGroup);
 		
 		//把好友从原分组中删除
-		fromGroup.getMembers().remove(user);
+		fromGroup.getMembers().remove(friend);
 		friendGroupDao.save(fromGroup);
 		
 	}
 
 	@Override
-	public void deleteMember(FriendsGroup group, User user) {
-		group.getMembers().remove(user);
+	public void deleteMember(FriendsGroup group, Friend friend) {
+		group.getMembers().remove(friend);
 		friendGroupDao.save(group);
 	}
 
 	@Override
 	public List<FriendsGroup> getByCreater(User creater) {
-		// TODO Auto-generated method stub
 		return friendGroupDao.getByCreater(creater);
+	}
+
+	@Override
+	public List<FriendsGroup> getByFriend(int userid) {
+		return friendGroupDao.getByFriend(userid);
 	}
 }

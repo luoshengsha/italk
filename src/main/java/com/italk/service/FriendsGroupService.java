@@ -2,6 +2,7 @@ package com.italk.service;
 
 import java.util.List;
 
+import com.italk.bean.Friend;
 import com.italk.bean.FriendsGroup;
 import com.italk.bean.User;
 
@@ -28,16 +29,16 @@ public interface FriendsGroupService {
 	 * 移动好友
 	 * @param fromGroup
 	 * @param toGroup
-	 * @param user
+	 * @param friend
 	 */
-	public void moveMember(FriendsGroup fromGroup, FriendsGroup toGroup, User user);
+	public void moveMember(FriendsGroup fromGroup, FriendsGroup toGroup, Friend friend);
 	
 	/**
 	 * 删除好友
 	 * @param group
-	 * @param user
+	 * @param friend
 	 */
-	public void deleteMember(FriendsGroup group, User user);
+	public void deleteMember(FriendsGroup group, Friend friend);
 	
 	/**
 	 * 根据创建者获取
@@ -45,4 +46,11 @@ public interface FriendsGroupService {
 	 * @return
 	 */
 	public List<FriendsGroup> getByCreater(User creater);
+	
+	/**
+	 * 根据用户获取其所在的所有的分组
+	 * @param userid
+	 * @return
+	 */
+	public List<FriendsGroup> getByFriend(int userid);
 }

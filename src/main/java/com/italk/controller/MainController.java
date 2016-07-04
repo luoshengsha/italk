@@ -8,20 +8,25 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.italk.bean.Cluster;
+import com.italk.bean.Friend;
 import com.italk.bean.FriendsGroup;
 import com.italk.bean.User;
 import com.italk.service.ClusterService;
 import com.italk.service.FriendsGroupService;
 import com.italk.service.UserService;
+import com.italk.utils.BeanConvertUtil;
 import com.italk.utils.WebUtil;
 import com.italk.vo.ClusterVo;
+import com.italk.vo.FriendVo;
 import com.italk.vo.FriendsGroupVo;
 import com.italk.vo.ReturnObject;
-import com.italk.vo.UserVo;
 
 /**
  * 主面板控制器
@@ -58,8 +63,8 @@ public class MainController {
 				cv.setId(c.getUuid());
 				cv.setName(c.getName());
 				
-				for(User u : c.getMembers()) {
-					UserVo uv = new UserVo();
+				/*for(User u : c.getMembers()) {
+					FriendVo uv = new FriendVo();
 					uv.setId(u.getId());
 					uv.setName(u.getName());
 					uv.setNick(u.getNickname());
@@ -72,7 +77,7 @@ public class MainController {
 							cv.getAvatars().add(uv.getAvatar());
 						}
 					}
-				}
+				}*/
 				clusters.add(cv);
 			}
 			
@@ -93,13 +98,14 @@ public class MainController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/friends/list")
-	public ReturnObject getFriends(HttpServletRequest request) {
+	@SubscribeMapping(value="/chat/friends/list-{userid}.htm")
+	public ReturnObject getFriends(@Header("token")String token) {
 		
 		ReturnObject obj = new ReturnObject();
 		
 		try {
-			User user = WebUtil.getLoginUser(request);
+			String id = WebUtil.getPrincipal(token).get("id");
+			User user = userService.find(Integer.parseInt(id));
 			
 			List<FriendsGroupVo> friendsGroup = new ArrayList<FriendsGroupVo>();
 			
@@ -108,14 +114,9 @@ public class MainController {
 				fgv.setId(group.getUuid());
 				fgv.setName(group.getName());
 				
-				for(User u : group.getMembers()) {
-					UserVo uv = new UserVo();
-					uv.setId(u.getId());
-					uv.setName(u.getName());
-					uv.setNick(u.getNickname());
-					uv.setAvatar(u.getAvatar()==null? "" : u.getAvatar().getImgpath());
-					uv.setStatus(u.getStatus());
-					fgv.getMembers().add(uv);
+				for(Friend f : group.getMembers()) {
+					FriendVo vo = BeanConvertUtil.convertFriend(f);
+					fgv.getMembers().add(vo);
 				}
 				
 				friendsGroup.add(fgv);

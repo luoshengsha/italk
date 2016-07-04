@@ -53,6 +53,25 @@
                     //showGreeting(JSON.parse(greeting.body).message);
                     //showGreeting(greeting.body);
                 });
+                
+                stompClient.subscribe("/app/chat/get_recent_msg.htm", function(greeting){
+                	console.log(greeting);
+                	var messages = JSON.parse(greeting.body);
+                	
+                	console.log(messages);
+                	//showGreeting(messages.from+"说：" + messages.message + "  " + messages.time);
+                	
+                	//$("#response").html("");
+                	
+                	/* $.each(messages,function(item) {
+                		console.log(item);
+                		showGreeting(JSON.parse(item).message);
+                	}); */
+                    //showGreeting(JSON.parse(greeting.body).message);
+                    //showGreeting(greeting.body);
+                    
+                	
+                });
             });
         }
 

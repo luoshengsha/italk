@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.OrderBy;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -34,6 +35,7 @@ public interface RecentMessageDao extends CrudRepository<RecentMessage, Integer>
 	 * @param toUser 接收者
 	 * @return
 	 */
+	@Query("select m from RecentMessage m where m.user=?1 and m.toUser=?2")
 	public RecentMessage getFriendsMessage(User user,User toUser);
 	
 	/**
@@ -42,5 +44,22 @@ public interface RecentMessageDao extends CrudRepository<RecentMessage, Integer>
 	 * @param toUser 接收者
 	 * @return
 	 */
+	@Query("select m from RecentMessage m where m.cluster=?1 and m.toUser=?2")
 	public RecentMessage getClusterMessage(Cluster cluster, User toUser);
+	
+	/**
+	 * 获取未读信息
+	 * @param toUser 接收者
+	 * @return
+	 */
+	@Query("select m from RecentMessage m where m.toUser=?1 and m.messageAmount > 0")
+	public List<RecentMessage> getUnreadMessage(User toUser);
+	
+	/**
+	 * 读消息
+	 * @param uuid
+	 */
+	@Modifying
+	@Query("update RecentMessage set messageAmount=0 where uuid=?1")
+	public void readMessage(String uuid);
 }

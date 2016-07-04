@@ -13,8 +13,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.italk.Application;
+import com.italk.bean.Cluster;
 import com.italk.bean.FriendsGroup;
 import com.italk.bean.User;
+import com.italk.service.ClusterService;
 import com.italk.service.FriendsGroupService;
 import com.italk.service.UserService;
 
@@ -27,6 +29,8 @@ public class FriendGroupTest {
 	
 	@Autowired
 	private FriendsGroupService groupService;
+	@Autowired
+	private ClusterService clusterService;
 	
 	@Test
 	public void save() {
@@ -44,7 +48,7 @@ public class FriendGroupTest {
 		
 		Set<User> members = new HashSet<User>();
 		members.add(userService.find(2));
-		group.setMembers(members);
+		//group.setMembers(members);
 		
 		groupService.update(group);
 	}
@@ -55,11 +59,20 @@ public class FriendGroupTest {
 		for(FriendsGroup group : groups) {
 			System.out.println(group.getName());
 		
-			Iterator<User> members = group.getMembers().iterator();
+			/*Iterator<User> members = group.getMembers().iterator();
 			while(members.hasNext()) {
 				User user = members.next();
 				System.out.println("name: " + user.getName() + ", nick: " + user.getNickname());
-			}
+			}*/
+		}
+	}
+	
+	@Test
+	public void getMembers() {
+		Cluster cluster = clusterService.find("ae949a21-9d6e-40dc-abb1-cfbdc596a133");
+		List<User> members = cluster.getMembers();
+		for(User user : members) {
+			System.out.println(user.getName());
 		}
 	}
 }

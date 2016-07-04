@@ -370,14 +370,15 @@
       return {
         id: headers.id,
         unsubscribe: function() {
-          return client.unsubscribe(headers.id);
+          return client.unsubscribe(headers.id,headers.token);
         }
       };
     };
 
-    Client.prototype.unsubscribe = function(id) {
+    Client.prototype.unsubscribe = function(id,token) {
       delete this.subscriptions[id];
       return this._transmit("UNSUBSCRIBE", {
+    	token:token,
         id: id
       });
     };

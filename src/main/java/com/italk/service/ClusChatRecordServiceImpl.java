@@ -8,7 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.italk.bean.ClusChatRecord;
+import com.italk.bean.Cluster;
 import com.italk.bean.RecentMessage;
+import com.italk.bean.User;
 import com.italk.dao.ClusChatRecordDao;
 import com.italk.utils.WebUtil;
 
@@ -34,14 +36,20 @@ public class ClusChatRecordServiceImpl implements ClusChatRecordService {
 		recordDao.save(record);
 		
 		//保存最近聊天记录
-		RecentMessage msg = new RecentMessage();
-		msg.setUuid(WebUtil.createUuid());
-		msg.setCluster(clusterService.find(record.getChannel()));
-		msg.setToUser(record.getToUser());
-		msg.setContent(record.getContent());
-		msg.setType(0);
-		msg.setCreateTime(record.getCreateTime());
-		recMsgService.save(msg);
+		Cluster cluster = clusterService.find(record.getChannel());
+		for(User member : cluster.getMembers()) {
+			if(member.getId() != record.getFromUser().getId()) {
+				RecentMessage msg = new RecentMessage();
+				msg.setUuid(WebUtil.createUuid());
+				msg.setCluster(clusterService.find(record.getChannel()));
+				msg.setToUser(member);
+				msg.setUser(record.getFromUser());
+				msg.setContent(record.getContent());
+				msg.setType(0);
+				msg.setCreateTime(record.getCreateTime());
+				recMsgService.save(msg);
+			}
+		}
 	}
 
 	@Override

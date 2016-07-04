@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -50,6 +52,7 @@ public class User {
 	
 	/** 用户状态 **/
 	@Column(nullable=false,length=10)
+	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 	
 	/** 注册时间 **/

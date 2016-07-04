@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.italk.bean.Friend;
 import com.italk.bean.FriendsGroup;
 import com.italk.bean.User;
+import com.italk.service.FriendService;
 import com.italk.service.FriendsGroupService;
 import com.italk.service.UserService;
 import com.italk.utils.WebUtil;
@@ -35,6 +37,8 @@ public class FriendGroupController {
 	private FriendsGroupService groupService;
 	@Resource
 	private UserService userService;
+	@Resource
+	private FriendService friendService;
 	
 	/**
 	 * 创建好友分组
@@ -174,17 +178,17 @@ public class FriendGroupController {
 	 * @return
 	 */
 	@RequestMapping(value="/movemember")
-	public ReturnObject moveMember(@RequestParam(value="userid",required=true) String userid, 
+	public ReturnObject moveMember(@RequestParam(value="friendid",required=true) String friendid, 
 			@RequestParam(value="from",required=true) String fromGroupid, 
 			@RequestParam(value="to",required=true) String toGroupid) {
 		ReturnObject obj = new ReturnObject();
 		
 		try {
-			User user = userService.find(userid);
+			Friend friend = friendService.find(friendid);
 			FriendsGroup fromGroup = groupService.find(fromGroupid);
 			FriendsGroup toGroup = groupService.find(toGroupid);
 			
-			groupService.moveMember(fromGroup, toGroup, user);
+			groupService.moveMember(fromGroup, toGroup, friend);
 			
 			obj.setStatus(1);
 			obj.setMessage("移动成功");
@@ -204,15 +208,15 @@ public class FriendGroupController {
 	 * @return
 	 */
 	@RequestMapping(value="/delmember")
-	public ReturnObject deleteMember(@RequestParam(value="userid",required=true) String userid, 
+	public ReturnObject deleteMember(@RequestParam(value="friendid",required=true) String friendid, 
 			@RequestParam(value="groupid",required=true) String groupid) {
 		ReturnObject obj = new ReturnObject();
 		
 		try {
-			User user = userService.find(userid);
+			Friend friend = friendService.find(friendid);
 			FriendsGroup group = groupService.find(groupid);
 			
-			groupService.deleteMember(group, user);
+			groupService.deleteMember(group, friend);
 			
 			obj.setStatus(1);
 			obj.setMessage("删除成功");

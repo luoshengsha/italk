@@ -17,6 +17,7 @@ import com.italk.service.UserService;
 import com.italk.service.UserTokenService;
 import com.italk.utils.Constants;
 import com.italk.vo.ReturnObject;
+import com.italk.vo.UserTokenVo;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -49,7 +50,8 @@ public class LoginController {
 				updateUserStatus(user);
 				
 				String token = Jwts.builder().setSubject(name).setIssuedAt(new Date())
-						.claim("pw", password.trim()).claim("id", user.getId()).signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+						.claim("pw", password.trim()).claim("id", user.getId()+"").claim("uuid", user.getUuid())
+						.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 				
 				//保存token
 				saveToken(user, token);
@@ -59,7 +61,7 @@ public class LoginController {
 		
 				obj.setStatus(1);
 				obj.setMessage("登录成功");
-				obj.setData(token);
+				obj.setData(new UserTokenVo(token,user.getId()));
 			} else {
 				obj.setStatus(0);
 				obj.setMessage("用户名或密码失败");
@@ -79,7 +81,7 @@ public class LoginController {
 	 */
 	private void updateUserStatus(User user) {
 		//设置为在线
-		user.setStatus(UserStatus.ONLINE);
+		//user.setStatus(UserStatus.ONLINE);
 		//设置最后登录时间
 		user.setLastLoginTime(new Date());
 		

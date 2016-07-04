@@ -8,17 +8,24 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.italk.bean.Cluster;
+import com.italk.bean.Member;
 import com.italk.bean.User;
 import com.italk.dao.ClusterDao;
 
+/**
+ * 群组接口实现
+ * @author luoshengsha
+ *
+ * 2016年6月30日-下午8:54:54
+ */
 @Service
-@Transactional
 public class ClusterServiceImpl implements ClusterService {
 
 	@Resource
 	private ClusterDao clusterDao;
 	
 	@Override
+	@Transactional
 	public void save(Cluster cluster) {
 		clusterDao.save(cluster);
 		//将群组加入进群里
@@ -46,8 +53,19 @@ public class ClusterServiceImpl implements ClusterService {
 	}
 
 	@Override
-	public void pushMember(Cluster cluster, User member) {
+	public void pushMember(Cluster cluster, User user) {
+		//创建组员
+		Member member = new Member();
+		member.setUser(user);
+		member.setCluster(cluster);
+		
+		if(cluster.getOwner().getId() == user.getId()) {
+			member.setIsmaster(true);
+		}
+		member.setNick(user.getNickname() == null ? user.getName() : user.getNickname());
+		
 		cluster.getMembers().add(member);
+		
 		clusterDao.save(cluster);
 	}
 

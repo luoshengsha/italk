@@ -20,10 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.italk.service.UserService;
 import com.italk.service.UserTokenService;
 import com.italk.utils.Constants;
+import com.italk.utils.WebUtil;
 import com.italk.vo.ReturnObject;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 
 /**
  * token校验配置
@@ -82,9 +80,8 @@ public class TokenConfig extends WebMvcConfigurerAdapter {
 			}
 			
 			try {
-				final Claims claims = Jwts.parser().setSigningKey("secretkey").parseClaimsJws(token).getBody();
-				String name = claims.getSubject();
-				String password = (String) claims.get("pw");
+				String name = WebUtil.getPrincipal(token).get("name");
+				String password = WebUtil.getPrincipal(token).get("password");
 
 				if(userService.checkUser(name, password)) {
 					request.setAttribute(Constants.SESSION_LOGIN_USERNAME, userService.getByName(name));

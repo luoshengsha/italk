@@ -42,5 +42,13 @@ public interface FriendsGroupDao extends CrudRepository<FriendsGroup, Integer> {
 	@Query("select g from FriendsGroup g where g.creater=?1")
 	@OrderBy("isDefault DESC")
 	public List<FriendsGroup> getByCreater(User creater);
+	
+	/**
+	 * 通过用户id查找此用户所在的所有好友分组
+	 * @param userid
+	 * @return
+	 */
+	@Query(value="select g.* from t_friendsgroup g LEFT JOIN t_friendsgroup_friend gf on gf.group_id=g.id LEFT JOIN t_friend f on gf.friend_id=f.id where f.friend_id=?1",nativeQuery=true)
+	public List<FriendsGroup> getByFriend(int userid);
 }
 

@@ -34,7 +34,7 @@ public class RecentMessage {
 	/** 用户 **/
 	@ManyToOne
 	@JoinColumn(name="user_id",nullable=true)
-	private User user;
+	private Friend user;
 	
 	/** 群组 **/
 	@ManyToOne
@@ -46,7 +46,8 @@ public class RecentMessage {
 	private int type;
 	
 	/** 接收用户 **/
-	@Column(name="touser_id",nullable=false)
+	@ManyToOne
+	@JoinColumn(name="touser_id",nullable=false)
 	private User toUser;
 	
 	/** 内容 **/
@@ -57,6 +58,10 @@ public class RecentMessage {
 	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createTime;
+	
+	/** 消息数量 **/
+	@Column(nullable=false, length=4)
+	private int messageAmount;
 
 	public int getId() {
 		return id;
@@ -74,11 +79,11 @@ public class RecentMessage {
 		this.uuid = uuid;
 	}
 
-	public User getUser() {
+	public Friend getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Friend user) {
 		this.user = user;
 	}
 
@@ -120,5 +125,13 @@ public class RecentMessage {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public int getMessageAmount() {
+		return messageAmount;
+	}
+
+	public void setMessageAmount(int messageAmount) {
+		this.messageAmount = messageAmount;
 	}
 }

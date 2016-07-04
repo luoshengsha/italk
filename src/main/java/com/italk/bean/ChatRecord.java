@@ -32,7 +32,7 @@ public class ChatRecord {
 	/** 聊天发起人 **/
 	@OneToOne
 	@JoinColumn(name="fromuser_id",nullable=false)
-	private User fromUser;
+	private Friend fromUser;
 	
 	/** 聊天接收人 **/
 	@OneToOne
@@ -59,10 +59,10 @@ public class ChatRecord {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public User getFromUser() {
+	public Friend getFromUser() {
 		return fromUser;
 	}
-	public void setFromUser(User fromUser) {
+	public void setFromUser(Friend fromUser) {
 		this.fromUser = fromUser;
 	}
 	public User getToUser() {

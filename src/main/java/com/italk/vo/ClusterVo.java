@@ -9,7 +9,7 @@ public class ClusterVo {
 	private String id;
 	private String name;
 	private Set<String> avatars = new HashSet<String>();
-	private List<UserVo> members = new ArrayList<UserVo>();
+	private List<FriendVo> members = new ArrayList<FriendVo>();
 	public String getId() {
 		return id;
 	}
@@ -28,10 +28,10 @@ public class ClusterVo {
 	public void setAvatars(Set<String> avatars) {
 		this.avatars = avatars;
 	}
-	public List<UserVo> getMembers() {
+	public List<FriendVo> getMembers() {
 		return members;
 	}
-	public void setMembers(List<UserVo> members) {
+	public void setMembers(List<FriendVo> members) {
 		this.members = members;
 	}
 }

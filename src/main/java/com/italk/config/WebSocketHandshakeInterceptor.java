@@ -21,11 +21,11 @@ public class WebSocketHandshakeInterceptor extends HttpSessionHandshakeIntercept
 		if (request instanceof ServletServerHttpRequest) {
 		   ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
 		   HttpSession session = servletRequest.getServletRequest().getSession(false);
-System.out.println(servletRequest.getServletRequest().getAttribute("token"));		   
+System.out.println("sessionId: " + session.getId());
 		   if (session == null || session.getAttribute(Constants.SESSION_LOGIN_USERNAME) == null) {
 			   return false;
 		   }
-		   
+		   System.out.println(Constants.SESSION_LOGIN_USERNAME+": " + session.getAttribute(Constants.SESSION_LOGIN_USERNAME));
 		 }
 
 		// TODO Auto-generated method stub

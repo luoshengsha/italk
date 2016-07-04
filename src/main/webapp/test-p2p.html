@@ -4,7 +4,7 @@
     <title>Hello WebSocket</title>
     <meta charset="utf-8">
     <script src="js/jquery.min.js"></script>
-    <script src="js/sockjs.js"></script>
+    <script src="js/sockjs-0.3.4.js"></script>
     <script src="js/stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
@@ -18,8 +18,8 @@
 
         function connect() {
         	//var socket = new SockJS('/ws');
-        	var options = {protocols_whitelist: ["websocket", "xhr-streaming", "xdr-streaming", "xhr-polling", "xdr-polling", "iframe-htmlfile", "iframe-eventsource", "iframe-xhr-polling"], debug: true};
-        	var socket = new SockJS('http://10.88.20.94:10000/ws',{},{transports:'123435'});
+        	//var options = {protocols_whitelist: ["websocket", "xhr-streaming", "xdr-streaming", "xhr-polling", "xdr-polling", "iframe-htmlfile", "iframe-eventsource", "iframe-xhr-polling"], debug: true};
+        	var socket = new SockJS('/ws');
         	stompClient = Stomp.over(socket);
         	
         	stompClient.connect({},function(frame) {
@@ -55,6 +55,24 @@
                     //showGreeting(JSON.parse(greeting.body).message);
                     //showGreeting(greeting.body);
                 });
+                stompClient.subscribe("/app/chat/get_recent_msg.htm", function(greeting){
+                	console.log(greeting);
+                	var messages = JSON.parse(greeting.body);
+                	
+                	console.log("----------------------------------------------------------");
+                	console.log(messages);
+                	//showGreeting(messages.from+"说：" + messages.message + "  " + messages.time);
+                	
+                	//$("#response").html("");
+                	
+                	/* $.each(messages,function(item) {
+                		console.log(item);
+                		showGreeting(JSON.parse(item).message);
+                	}); */
+                    //showGreeting(JSON.parse(greeting.body).message);
+                    //showGreeting(greeting.body);
+                },
+                {token:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzEwMDM1NCwicHciOiIxMjM0NTYiLCJpZCI6MX0.3Dmjv5HQLa0e-fYQTNAQPY-cemwAuYKxyUI8MFYWl1Q'});
             });
         }
 
@@ -68,7 +86,7 @@
 
         function sendName() {
             var message = document.getElementById('name').value;
-            stompClient.send("/app/chat/p2p/sendmsg.htm", {'channel':'1-2','from':'2','to':'1'}, JSON.stringify({ 'content': message }));
+            stompClient.send("/app/chat/p2p/sendmsg.htm", {'channel':'1-2','from':'2','to':'1',token:'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdnpodSIsImlhdCI6MTQ2NzEwMDM1NCwicHciOiIxMjM0NTYiLCJpZCI6MX0.3Dmjv5HQLa0e-fYQTNAQPY-cemwAuYKxyUI8MFYWl1Q'}, JSON.stringify({ 'content': message }));
         }
 
         function showGreeting(message) {
